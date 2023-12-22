@@ -32,6 +32,22 @@ plugins {
     id "io.freefair.lombok" version "8.4"
 }
 
+tasks.register('testBoth') {
+    doFirst {
+        println 'This is executed first during the execution phase.'
+    }
+    doLast {
+        println 'This is executed last during the execution phase.'
+    }
+    println 'This is executed during the configuration phase as well, because :testBoth is used in the build.'
+}
+
+//configuration.doFirst {
+//    if (file("/Users/zaniu/.m2/repository/org/opensearch/plugin/opensearch-sql-plugin/3.0.0.0/opensearch-sql-plugin-3.0.0.0.pom").exists()) {
+//        println "found fucking file!"
+//    }
+//}
+
 lombok {
     version = "1.18.30"
 }
@@ -51,6 +67,9 @@ allprojects {
     }
     if (isSnapshot) {
         version += "-SNAPSHOT"
+    }
+    if (file("/Users/zaniu/.m2/repository/org/opensearch/plugin/opensearch-sql-plugin/3.0.0.0/opensearch-sql-plugin-3.0.0.0.pom").exists()) {
+        println "found fucking file!"
     }
 }
 
@@ -73,6 +92,31 @@ def jsJarDirectory = "$buildDir/dependencies/opensearch-job-scheduler"
 def adJarDirectory = "$buildDir/dependencies/opensearch-time-series-analytics"
 
 configurations {
+    if (file("/home/runner/.m2/repository/org/opensearch/plugin/opensearch-job-scheduler/3.0.0.0/opensearch-job-scheduler-3.0.0.0.pom").exists()) {
+        println "Zaniu File /home/runner/.m2/repository/org/opensearch/plugin/opensearch-job-scheduler/3.0.0.0/opensearch-job-scheduler-3.0.0.0.pom exist!"
+    } else {
+        println "Zaniu File /home/runner/.m2/repository/org/opensearch/plugin/opensearch-job-scheduler/3.0.0.0/opensearch-job-scheduler-3.0.0.0.pom not exist!"
+    }
+
+    if (file("/home/runner/.m2/repository/org/opensearch/opensearch-job-scheduler/3.0.0.0/opensearch-job-scheduler-3.0.0.0.pom").exists()) {
+        println "Zaniu File /home/runner/.m2/repository/org/opensearch/opensearch-job-scheduler/3.0.0.0/opensearch-job-scheduler-3.0.0.0.pom exist!"
+    } else {
+        println "Zaniu File /home/runner/.m2/repository/org/opensearch/opensearch-job-scheduler/3.0.0.0/opensearch-job-scheduler-3.0.0.0.pom not exist!"
+    }
+    if(file("/home/runner/.m2/repository/org/opensearch/").exists()) {
+        File[] files = file("/home/runner/.m2/repository/org/opensearch/").listFiles();
+        files.each { file ->
+            println file.name
+        }
+        println "End of printing folders under /home/runner/.m2/repository/org/opensearch/"
+    }
+    if(file("/home/runner/.m2/repository/org/opensearch/plugin").exists()) {
+        File[] files = file("/home/runner/.m2/repository/org/opensearch/plugin").listFiles();
+        files.each { file ->
+            println file.name
+        }
+        println "End of printing folders under /home/runner/.m2/repository/org/opensearch/plugin"
+    }
     zipArchive
     all {
         resolutionStrategy {
